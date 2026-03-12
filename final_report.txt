@@ -1,4 +1,4 @@
-===== KẾT QUẢ KIỂM THỬ TỰ ĐỘNG =====
+===== Automation test =====
 ------------------------------------
 Test Case 01 [ENCODE]: PASS
 Test Case 02 [ENCODE]: PASS
