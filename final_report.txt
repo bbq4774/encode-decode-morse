@@ -1,0 +1,13 @@
+===== KẾT QUẢ KIỂM THỬ TỰ ĐỘNG =====
+------------------------------------
+Test Case 01 [ENCODE]: PASS
+Test Case 02 [ENCODE]: PASS
+Test Case 03 [ENCODE]: PASS
+Test Case 04 [ENCODE]: PASS
+Test Case 05 [ENCODE]: PASS
+Test Case 06 [DECODE]: PASS
+Test Case 07 [DECODE]: PASS
+Test Case 08 [DECODE]: PASS
+Test Case 09 [DECODE]: PASS
+Test Case 10 [DECODE]: PASS
+------------------------------------

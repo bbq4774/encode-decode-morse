@@ -110,7 +110,7 @@ static char find_char(const char *m)
 void encode_file(const char *filename)
 {
     FILE *f = fopen(filename,"r");
-    FILE *out = fopen("encode_output.txt","w");
+    FILE *out = fopen("result.txt","w");
 
     if(!f || !out)
     {
@@ -172,6 +172,7 @@ void encode_file(const char *filename)
         }
     }
 
+    fprintf(out, "\n");
     printf("\n");
 
     fclose(f);
@@ -202,7 +203,7 @@ void encode_file(const char *filename)
 void decode_file(const char *filename)
 {
     FILE *f = fopen(filename,"r");
-    FILE *out = fopen("decode_output.txt","w");
+    FILE *out = fopen("result.txt","w");
 
     if(!f || !out)
     {
@@ -222,6 +223,15 @@ void decode_file(const char *filename)
         if(ch=='+' || ch=='=')
         {
             buffer[idx++] = ch;
+            if (idx == 19)
+            {
+                write_error(out);
+
+                /* log error */
+                printf("\nInvalid Morse\n");
+                fclose(f); 
+                return; 
+            }
         }
         /* space means end of one morse symbol */
         else if(ch==' ')
@@ -230,6 +240,17 @@ void decode_file(const char *filename)
             {
                 buffer[idx]='\0';
                 char c = find_char(buffer);
+
+                /* invalid morse */
+                if (c == '?') 
+                {
+                    write_error(out);
+
+                    /* log error */
+                    printf("\nInvalid Morse\n");
+                    fclose(f); 
+                    return; 
+                }
 
                 fprintf(out,"%c",c);
 
@@ -253,6 +274,15 @@ void decode_file(const char *filename)
                 }
             }
         }
+        else if(ch!='\n')
+        {
+            write_error(out);
+
+            /* log error */
+            printf("\nInvalid Morse\n");
+            fclose(f); 
+            return; 
+        }
     }
 
     /* handle last morse symbol if file doesn't end with space */
@@ -261,14 +291,42 @@ void decode_file(const char *filename)
         buffer[idx]='\0';
         char c = find_char(buffer);
 
+        /* invalid morse */
+        if (c == '?') 
+        {
+            write_error(out);
+
+            /* log error */
+            printf("\nInvalid Morse\n");
+            fclose(f); 
+            return; 
+        }
+
         fprintf(out,"%c",c);
 
         if(printed < 20)
             printf("%c",c);
     }
 
+    fprintf(out, "\n");
     printf("\n");
 
     fclose(f);
     fclose(out);
+}
+
+void write_error(FILE *file)
+{
+    /* close file */
+    fclose(file); 
+
+    /* re-open file to reset content in file */
+    file = fopen("result.txt", "w"); 
+
+    if (file != NULL) 
+    {
+        /* log error */
+        fprintf(file, "Invalid Morse");
+        fclose(file);
+    }
 }
