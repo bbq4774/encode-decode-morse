@@ -3,8 +3,12 @@
 EXE="./my_morse.o"
 IN_DIR="tests/input"
 EXP_DIR="tests/expected"
+ACT_DIR="tests/actual_results"
 RES_FILE="result.txt"
 FINAL_LOG="final_report.txt"
+
+# Create actual results directory if it doesn't exist
+mkdir -p $ACT_DIR
 
 # Log title
 echo "===== Automation test =====" > $FINAL_LOG
@@ -25,6 +29,11 @@ do
         $EXE -d "$IN_DIR/$i.txt" > /dev/null 2>&1
     fi
 
+    # Save current result to a separate file for each test case
+    if [ -f "$RES_FILE" ]; then
+        cp "$RES_FILE" "$ACT_DIR/${i}_actual.txt"
+    fi
+
     # Write log to final_report file
     echo -n "Test Case $i [$MODE]: " >> $FINAL_LOG
     
@@ -40,5 +49,6 @@ done
 
 echo "------------------------------------" >> $FINAL_LOG
 echo "DONE! Log save in file: $FINAL_LOG"
+echo "Check individual results in: $ACT_DIR/" # Notified storage path
 echo "------------------------------------"
-cat $FINAL_LOG #
+cat $FINAL_LOG
