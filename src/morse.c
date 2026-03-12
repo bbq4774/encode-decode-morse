@@ -315,6 +315,15 @@ void decode_file(const char *filename)
     fclose(out);
 }
 
+/*
+    write_error()
+
+    Purpose:
+    Write error to file
+
+    Input:
+    FILE *file
+*/
 void write_error(FILE *file)
 {
     /* close file */
